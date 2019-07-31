@@ -1,0 +1,145 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Delta - Web API Swagger specification",
+    "description": "Generates Document Number by triggering ITP request",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://deltatst.dll.corp:80/prweb/PRRestService/ContractAPI/v0"
+    }
+  ],
+  "paths": {
+    "/GetDocumentNumber": {
+      "post": {
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "contains the oAuth Access Token or API Key to make authenticated API calls",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestDocumentDetails"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDocumentDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RequestDocumentDetails": {
+        "type": "object",
+        "properties": {
+          "ContractNumber": {
+            "type": "string",
+            "description": "Contract Number only"
+          },
+          "CalculationID": {
+            "type": "string",
+            "description": "The quote request case number"
+          }
+        }
+      },
+      "ResponseDocumentDetails": {
+        "type": "object",
+        "properties": {
+          "CalculationID": {
+            "type": "string",
+            "description": "The quote request case number",
+            "example": "TQ-11111"
+          },
+          "DocumentID": {
+            "type": "string",
+            "description": "Sends Document ID received from ITP",
+            "example": "Yes, No"
+          },
+          "ContractNumber": {
+            "type": "string",
+            "description": "The Contract number",
+            "example": "40001111"
+          },
+          "RemarkMessage": {
+            "type": "string",
+            "description": "Shows the message if any success/error/exception happens"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "A machine-readible error ID (e.g. \"missing inputs\")"
+          },
+          "message": {
+            "type": "string",
+            "description": "A clear message explaining the error"
+          }
+        }
+      }
+    }
+  }
+}
